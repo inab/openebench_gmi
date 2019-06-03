@@ -1,12 +1,12 @@
 {
     "event_id": "gmi",
-    "participant_id": "participant7",
+    "participant_id": "isciii",
     "metrics": {
         "x": {
             "type": "metrics",
             "units": "none",
             "name": "sensitivity",
-            "value": 0.8571428571428571
+            "value": 1.0
         },
         "y": {
             "type": "metrics",

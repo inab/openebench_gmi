@@ -31,10 +31,10 @@ def helpMessage() {
 
     The typical command for running the pipeline is as follows:
 
-    nextflow run BU-ISCIII/openebench_gmi --tree_test {test.newick.file} --goldstandard_dir {golden.folder.path} --assess_dir {assessment.path} --public_ref_dir {path.to.info.ref.dataset} --event_id {event.id}
+    nextflow run BU-ISCIII/openebench_gmi --input {test.newick.file} --goldstandard_dir {golden.folder.path} --assess_dir {assessment.path} --public_ref_dir {path.to.info.ref.dataset} --event_id {event.id}
 
     Mandatory arguments:
-      --tree_test                   Path to input data (must be surrounded with quotes).
+      --input                   Path to input data (must be surrounded with quotes).
       --goldstandard_dir            Path to reference data. Golden datasets.
       --public_ref_dir				Path where public dataset info is stored for validation.
       --assess_dir					Path where benchmark data is stored.
@@ -43,7 +43,9 @@ def helpMessage() {
       --tree_format					Format tree ["nexus","newick"].
 
     Other options:
+	  --statsdir					The output directory with nextflow statistics
       --outdir                      The output directory where the results will be saved
+	  --otherdir					The output directory where custom results will be saved (no directory inside)
     """.stripIndent()
 }
 
@@ -65,9 +67,9 @@ if (params.help){
 * DEFAULT AND CUSTOM VALUE FOR CONFIGURABLE VARIABLES
 */
 
-if(params.tree_test){
-	tree_test_file = file(params.tree_test)
-	if (!tree_test_file.exists()) exit 1, "Input Newick file not found: ${params.tree_test}"
+if(params.input){
+	input_file = file(params.input)
+	if (!input_file.exists()) exit 1, "Input Newick file not found: ${params.input}"
 }
 
 if(params.goldstandard_dir){
@@ -98,9 +100,9 @@ if ( ! (params.tree_format =~ /newick|nexus/) ) {
 * CHECK MANDATORY INPUTS
 */
 
-params.tree_test = false
-if(! params.tree_test){
-	exit 1, "Missing tree test file : $params.tree_test. Specify path with --tree_test"
+params.input = false
+if(! params.input){
+	exit 1, "Missing tree input file : $params.input. Specify path with --input"
 }
 
 params.event_id = false
@@ -121,7 +123,7 @@ log.info "========================================="
 log.info " BU-ISCIII/openebench_gmi : OpenEBench pipeline for Outbreak detection challenge v${version}"
 log.info "========================================="
 def summary = [:]
-summary['Test tree input']   = params.tree_test
+summary['Test tree input']   = params.input
 summary['Goldstandard dir']  = params.goldstandard_dir
 summary['Public ref dir']    = params.public_ref_dir
 summary['Benchmark data dir']  = params.assess_dir
@@ -132,7 +134,9 @@ summary['Current home']        = "$HOME"
 summary['Current user']        = "$USER"
 summary['Current path']        = "$PWD"
 summary['Working dir']         = workflow.workDir
+summary['Stats dir']           = params.stats
 summary['Output dir']          = params.outdir
+summary['Other Output dir']    = params.otherdir
 summary['Script dir']          = workflow.projectDir
 summary['Config Profile'] = workflow.profile
 log.info summary.collect { k,v -> "${k.padRight(21)}: $v" }.join("\n")
@@ -166,7 +170,7 @@ PIPELINE
 */
 process dockerPreconditions {
   //tag
-  publishDir path: "${params.outdir}", mode: 'copy', overwrite: true
+  publishDir path: "${params.statsdir}", mode: 'copy', overwrite: true
 
   input:
 
@@ -195,16 +199,17 @@ process validateInputFormat {
 
   container 'openebench_gmi/sample-checkresults'
 
-  publishDir path: "${params.outdir}", mode: 'copy', overwrite: true
+  publishDir path: "${params.otherdir}", mode: 'copy', overwrite: true
 
   input:
-  file tree from tree_test_file
+  file tree from input_file
   file docker_image_dependency
 
   output:
   file "*.nwk" into canonical_getresultsids,canonical_robinsonfoulds,canonical_snprecision
 
   """
+  ls /scif
   checkTreeFormat.py --tree_file ${tree} --tree_format ${params.tree_format} --output ${params.participant_id}_canonical.nwk
   """
 
@@ -217,7 +222,7 @@ process getQueryIds {
 
   container 'openebench_gmi/sample-getqueryids'
 
-  publishDir path: "${params.outdir}", mode: 'copy', overwrite: true
+  publishDir path: "${params.otherdir}", mode: 'copy', overwrite: true
 
   input:
   file tree from canonical_getresultsids
@@ -239,7 +244,7 @@ process ValidateInputIds {
 
   container 'openebench_gmi/sample-compareids'
 
-  publishDir path: "${params.outdir}", mode: 'copy', overwrite: true
+  publishDir path: "${params.otherdir}", mode: 'copy', overwrite: true
 
   input:
   file query_ids from query_ids_json
@@ -261,7 +266,7 @@ process RobinsonFouldsMetrics {
 
   container 'openebench_gmi/sample-robinsonfoulds'
 
-  publishDir path: "${params.outdir}", mode: 'copy', overwrite: true
+  publishDir path: "${params.otherdir}", mode: 'copy', overwrite: true
 
   input:
   val file_validated from EXIT_STAT_ROBINSONFOULDS
@@ -287,7 +292,7 @@ process SnPrecisionMetrics {
 
   container 'openebench_gmi/sample-calculatesnprecision'
 
-  publishDir path: "${params.outdir}", mode: 'copy', overwrite: true
+  publishDir path: "${params.otherdir}", mode: 'copy', overwrite: true
 
   input:
   val file_validated from EXIT_STAT_SNPRECISION
@@ -316,10 +321,10 @@ process manage_assessment_snprecision {
 	file assess_dir from asses_dir_snprecision
 	file participant_result from metrics_snprecision_json
 	output:
-	file benchmark_snprecision_result
+	file "realres/*" into benchmark_snprecision_result
 
 	"""
-	python /app/manage_assessment_data.py -b $assess_dir -p $participant_result -o benchmark_snprecision_result
+	python /app/manage_assessment_data.py -b $assess_dir -p $participant_result -o realres
 	"""
 
 }
@@ -328,16 +333,16 @@ process manage_assessment_rfheatmap {
 	container = "openebench_gmi/sample-assessment-rfheatmap:latest"
 	tag "Performing benchmark assessment and building plots"
 
-  	publishDir path: "${params.outdir}", mode: 'copy', overwrite: true
+  	publishDir path: "${params.otherdir}", mode: 'copy', overwrite: true
 
 	input:
 	file assess_dir from asses_dir_rfheatmap
 	file rb_metrics from metrics_robinsonfoulds_json
 	output:
-	file benchmark_rfheatmap_result
+	file "heatmap/*" into benchmark_rfheatmap_result
 
 	"""
-	manageAssessmentRfHeatmap.py --assess_dir $assess_dir --output benchmark_rfheatmap_result
+	manageAssessmentRfHeatmap.py --assess_dir $assess_dir --output heatmap
 	"""
 
 }
