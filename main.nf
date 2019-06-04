@@ -136,7 +136,7 @@ summary['Current home']        = "$HOME"
 summary['Current user']        = "$USER"
 summary['Current path']        = "$PWD"
 summary['Working dir']         = workflow.workDir
-summary['Stats dir']           = params.stats
+summary['Stats dir']           = params.statsdir
 summary['Output dir']          = params.outdir
 summary['Other Output dir']    = params.otherdir
 summary['Script dir']          = workflow.projectDir
@@ -281,7 +281,9 @@ process RobinsonFouldsMetrics {
   file_validated == 0
 
   """
-  calculateRobinsonFouldsMetric.py --tree_file1 $tree1 --benchmark_trees_path $benchmark_dir -e ${params.event_id} -p ${params.participant_id}
+  mkdir aggregated_data
+  cp -r $benchmark_dir/* aggregated_data/
+  calculateRobinsonFouldsMetric.py --tree_file1 $tree1 --benchmark_trees_path aggregated_data -e ${params.event_id} -p ${params.participant_id}
   """
 
 }
@@ -322,12 +324,16 @@ process manage_assessment_snprecision {
 	file assess_dir from asses_dir_snprecision
 	file participant_result from metrics_snprecision_json
   val result_dir
+  val new_data from file(params.otherdir)
 
 	// output:
 	// file "$result_dir/*" into benchmark_snprecision_result
 
 	"""
-	python /app/manage_assessment_data.py -b $assess_dir -p $participant_result -o $result_dir
+  mkdir aggregated_data
+  cp -r $assess_dir/* aggregated_data/
+  cp $new_data/participant_matrix.json $new_data/*.nwk aggregated_data/
+	python /app/manage_assessment_data.py -b aggregated_data -p $participant_result -o $result_dir
 	"""
 
 }

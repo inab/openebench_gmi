@@ -1,9 +1,9 @@
 task_id	hash	native_id	name	status	exit	submit	duration	realtime	%cpu	rss	vmem	rchar	wchar
-1	4e/d52875	6366	dockerPreconditions	COMPLETED	0	2019-06-04 12:33:09.737	5.5s	2s	50.0%	35.5 MB	571.5 MB	17.1 MB	18.9 MB
-2	13/8287f2	6760	validateInputFormat	COMPLETED	0	2019-06-04 12:33:15.316	1.3s	129ms	0.0%	10.1 MB	34.8 MB	492.8 KB	0
-3	c2/4eec9e	7072	getQueryIds	COMPLETED	0	2019-06-04 12:33:16.591	1.2s	142ms	0.0%	9.9 MB	32.3 MB	417.2 KB	0
-4	61/e5d0e6	7366	ValidateInputIds (1)	COMPLETED	0	2019-06-04 12:33:17.768	1.2s	33ms	0.0%	9.9 MB	32.6 MB	414.6 KB	0
-6	37/630f5b	7673	SnPrecisionMetrics (1)	COMPLETED	0	2019-06-04 12:33:19.006	1.3s	209ms	0.0%	9.7 MB	32.3 MB	400 KB	0
-5	d1/4cba39	7661	RobinsonFouldsMetrics (1)	COMPLETED	0	2019-06-04 12:33:18.997	1.6s	324ms	249.4%	40 MB	475.7 MB	5.3 MB	613 B
-7	9d/e25368	8290	manage_assessment_snprecision (Performing benchmark assessment and building plots)	COMPLETED	0	2019-06-04 12:33:20.310	6.6s	1s	241.6%	67.6 MB	636.1 MB	13.6 MB	361.8 KB
-8	f4/68306b	8401	manage_assessment_rfheatmap (Performing benchmark assessment and building plots)	COMPLETED	0	2019-06-04 12:33:20.610	6.3s	911ms	271.0%	39.8 MB	511 MB	8.6 MB	10 B
+1	b5/44a4c8	21910	dockerPreconditions	COMPLETED	0	2019-06-04 16:42:50.227	5.4s	2.4s	66.2%	35.1 MB	363.8 MB	19.6 MB	22.3 MB
+2	92/7bdd78	22314	validateInputFormat	COMPLETED	0	2019-06-04 16:42:55.721	1.2s	131ms	0.0%	9.9 MB	32.6 MB	416.1 KB	0
+3	43/28424e	22608	getQueryIds	COMPLETED	0	2019-06-04 16:42:57.005	1.2s	134ms	0.0%	9.9 MB	32.6 MB	417.2 KB	0
+4	28/b0535f	22903	ValidateInputIds (1)	COMPLETED	0	2019-06-04 16:42:58.191	1.1s	34ms	0.0%	9.9 MB	34.6 MB	419 KB	0
+6	47/740ccf	23198	RobinsonFouldsMetrics (1)	COMPLETED	0	2019-06-04 16:42:59.332	1.6s	214ms	249.0%	40 MB	475.7 MB	42 KB	12.7 KB
+5	81/6ea6fe	23218	SnPrecisionMetrics (1)	COMPLETED	0	2019-06-04 16:42:59.341	1.7s	199ms	194.3%	9.8 MB	32.3 MB	400 KB	0
+7	69/9ecaee	23902	manage_assessment_rfheatmap (Performing benchmark assessment and building plots)	COMPLETED	0	2019-06-04 16:43:00.985	6.7s	902ms	321.3%	39.4 MB	510.6 MB	8.3 MB	10 B
+8	b4/7ccf71	23934	manage_assessment_snprecision (Performing benchmark assessment and building plots)	COMPLETED	0	2019-06-04 16:43:01.030	6.9s	1.1s	256.2%	56.1 MB	558.1 MB	8.9 MB	372.7 KB

@@ -1,6 +1,6 @@
 {
     "event_id": "gmi",
-    "participant_id": "MY_TOOL",
+    "participant_id": "ISCIII_TOOL",
     "metrics": {
         "x": {
             "type": "metrics",
