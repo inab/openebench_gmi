@@ -115,6 +115,8 @@ if(! params.participant_id){
 	exit 1, "Missing Participant identifier : $params.participant_id. Specify path with --participant_id"
 }
 
+result_dir = file(params.outdir)
+
 
 /*
 * HEADER LOG INFO
@@ -197,7 +199,7 @@ process dockerPreconditions {
 */
 process validateInputFormat {
 
-  container 'openebench_gmi/sample-checkresults'
+  container 'openebench_gmi/sample-checkresults:latest'
 
   publishDir path: "${params.otherdir}", mode: 'copy', overwrite: true
 
@@ -209,7 +211,6 @@ process validateInputFormat {
   file "*.nwk" into canonical_getresultsids,canonical_robinsonfoulds,canonical_snprecision
 
   """
-  ls /scif
   checkTreeFormat.py --tree_file ${tree} --tree_format ${params.tree_format} --output ${params.participant_id}_canonical.nwk
   """
 
@@ -220,7 +221,7 @@ process validateInputFormat {
 */
 process getQueryIds {
 
-  container 'openebench_gmi/sample-getqueryids'
+  container 'openebench_gmi/sample-getqueryids:latest'
 
   publishDir path: "${params.otherdir}", mode: 'copy', overwrite: true
 
@@ -242,7 +243,7 @@ process getQueryIds {
 */
 process ValidateInputIds {
 
-  container 'openebench_gmi/sample-compareids'
+  container 'openebench_gmi/sample-compareids:latest'
 
   publishDir path: "${params.otherdir}", mode: 'copy', overwrite: true
 
@@ -264,7 +265,7 @@ process ValidateInputIds {
 */
 process RobinsonFouldsMetrics {
 
-  container 'openebench_gmi/sample-robinsonfoulds'
+  container 'openebench_gmi/sample-robinsonfoulds:latest'
 
   publishDir path: "${params.otherdir}", mode: 'copy', overwrite: true
 
@@ -290,7 +291,7 @@ process RobinsonFouldsMetrics {
 */
 process SnPrecisionMetrics {
 
-  container 'openebench_gmi/sample-calculatesnprecision'
+  container 'openebench_gmi/sample-calculatesnprecision:latest'
 
   publishDir path: "${params.otherdir}", mode: 'copy', overwrite: true
 
@@ -315,16 +316,18 @@ process manage_assessment_snprecision {
 	container = "openebench_gmi/sample-assessment-snprecision:latest"
 	tag "Performing benchmark assessment and building plots"
 
-  	publishDir path: "${params.outdir}", mode: 'copy', overwrite: true
+  	// publishDir path: "${params.outdir}", mode: 'copy', overwrite: true
 
 	input:
 	file assess_dir from asses_dir_snprecision
 	file participant_result from metrics_snprecision_json
-	output:
-	file "realres/*" into benchmark_snprecision_result
+  val result_dir
+
+	// output:
+	// file "$result_dir/*" into benchmark_snprecision_result
 
 	"""
-	python /app/manage_assessment_data.py -b $assess_dir -p $participant_result -o realres
+	python /app/manage_assessment_data.py -b $assess_dir -p $participant_result -o $result_dir
 	"""
 
 }
