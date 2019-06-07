@@ -324,7 +324,7 @@ process manage_assessment_snprecision {
 	file assess_dir from asses_dir_snprecision
 	file participant_result from metrics_snprecision_json
   val result_dir
-  val new_data from file(params.otherdir)
+  file new_data from file(params.otherdir)
 
 	// output:
 	// file "$result_dir/*" into benchmark_snprecision_result
