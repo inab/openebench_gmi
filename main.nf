@@ -333,7 +333,8 @@ process manage_assessment_snprecision {
   mkdir aggregated_data
   cp -r $assess_dir/* aggregated_data/
   cp $new_data/participant_matrix.json $new_data/*.nwk aggregated_data/
-	python /app/manage_assessment_data.py -b aggregated_data -p $participant_result -o $result_dir
+	python /app/manage_assessment_data.py -b aggregated_data -p $participant_result -o results
+  cp -pr results/* $result_dir
 	"""
 
 }
