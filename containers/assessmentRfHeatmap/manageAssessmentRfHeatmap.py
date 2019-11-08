@@ -35,7 +35,7 @@ def check_arg (args=None) :
     parser.add_argument('--version','-v', action='version', version='%(prog)s 0.3.5')
     parser.add_argument('--assess_dir','-a' ,required= False,help = "Path to assessment dir")
     parser.add_argument('--output' ,'-o',required= False, help = 'Path to result folder. Default = benchmark_result', default="benchmark_result")
-    parser.add_argument('--event_id','-e' ,required= False, help = 'OpenEbench event identifier', default="default")
+    parser.add_argument('--challenges_ids','-e' ,required= False, help = 'OpenEbench event identifier', default="default")
     parser.add_argument('--participant_id','-p' ,required= False, help = 'OpenEbench participant identifier', default="default")
 
     return parser.parse_args()

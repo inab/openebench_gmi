@@ -1,5 +1,5 @@
 {
-    "event_id": "gmi",
+    "challenges_ids": "gmi",
     "participants": ["participant1", "participant-2", "participant-3", "participant-4", "participant-5", "participant-6","participant-7" ],
     "matrix": {
         "values": [[0.8, 2.4, 2.5, 3.9, 0.4 , 4.3 , 0.2 ],

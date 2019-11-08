@@ -29,7 +29,7 @@ def check_arg (args=None) :
     parser.add_argument('--tree_file','-t', required= True, help ='Path to tree file')
     parser.add_argument('--tree_format','-f' ,required= True,choices = ["newick","nexus"], help = 'Tree file format [newick,nexus]')
     parser.add_argument('--output','-o' ,required= False, help = 'Path to result tree file.Default = tree.nwk', default="tree.nwk")
-    parser.add_argument('--event_id','-e' ,required= False, help = 'OpenEbench event identifier', default="default")
+    parser.add_argument('--challenges_ids','-e' ,required= False, help = 'OpenEbench event identifier', default="default")
 
     return parser.parse_args()
 

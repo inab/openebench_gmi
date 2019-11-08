@@ -33,7 +33,7 @@ def check_arg (args=None) :
     parser.add_argument('--tree_file2','-t2', required= True, help ='Path to tree file 2')
     parser.add_argument('--tree_format','-f' ,required= False,choices = ["newick","nexus"], help = 'Tree file format [newick,nexus]', default = "newick")
     parser.add_argument('--output' ,'-o',required= False, help = 'Path to result metric json.Default = robinfoulds.json', default="robinfoulds.json")
-    parser.add_argument('--event_id','-e' ,required= False, help = 'OpenEbench event identifier', default="default")
+    parser.add_argument('--challenges_ids','-e' ,required= False, help = 'OpenEbench event identifier', default="default")
     parser.add_argument('--participant_id','-p' ,required= False, help = 'OpenEbench participant identifier', default="default")
 
     return parser.parse_args()
@@ -103,9 +103,9 @@ if __name__ == '__main__' :
         sys.exit(1)
 
 
-    #Create ids dictionary with event_id and sample ids from tree leaves.
+    #Create ids dictionary with challenges_ids and sample ids from tree leaves.
     try:
-        metrics.update(event_id = arguments.event_id)
+        metrics.update(challenges_ids = arguments.challenges_ids)
         metrics.update(participant_id = arguments.participant_id)
         metrics_info1.update(type="metrics",units="none",name="Robinson-Foulds metric",value=results["rf"])
         metrics_info2.update(type="metrics",units="none",name="Normalized Robinson-Foulds metric",value=results["norm_rf"])

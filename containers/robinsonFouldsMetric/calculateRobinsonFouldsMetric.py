@@ -33,7 +33,7 @@ def check_arg (args=None) :
     parser.add_argument('--tree_file1','-t1', required= True, help ='Path to tree file 1')
     parser.add_argument('--benchmark_trees_path','-b', required= True, help ='Path to benchmark path where other participants tree are found.')
     parser.add_argument('--output' ,'-o',required= False, help = 'Path to result metric json.Default = participant_matrix.json', default="participant_matrix.json")
-    parser.add_argument('--event_id','-e' ,required= False, help = 'OpenEbench event identifier', default="default")
+    parser.add_argument('--challenges_ids','-e' ,required= False, help = 'OpenEbench event identifier', default="default")
     parser.add_argument('--participant_id','-p' ,required= False, help = 'OpenEbench participant identifier', default="default")
 
     return parser.parse_args()
@@ -132,7 +132,7 @@ if __name__ == '__main__' :
         raise
         sys.exit(1)
 
-    #Create ids dictionary with event_id and sample ids from tree leaves.
+    #Create ids dictionary with challenges_ids and sample ids from tree leaves.
     try:
         print("Updating benchmark data with new participant..")
         for row in benchmark_data:

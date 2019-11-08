@@ -31,14 +31,14 @@ def helpMessage() {
 
     The typical command for running the pipeline is as follows:
 
-    nextflow run BU-ISCIII/openebench_gmi --input {test.newick.file} --goldstandard_dir {golden.folder.path} --assess_dir {assessment.path} --public_ref_dir {path.to.info.ref.dataset} --event_id {event.id}
+    nextflow run BU-ISCIII/openebench_gmi --input {test.newick.file} --goldstandard_dir {golden.folder.path} --assess_dir {assessment.path} --public_ref_dir {path.to.info.ref.dataset} --challenges_ids {event.id}
 
     Mandatory arguments:
       --input                   Path to input data (must be surrounded with quotes).
       --goldstandard_dir            Path to reference data. Golden datasets.
       --public_ref_dir				Path where public dataset info is stored for validation.
       --assess_dir					Path where benchmark data is stored.
-      --event_id                    Event identifier.
+      --challenges_ids                    Event identifier.
       --participant_id				Participant identifier.
       --tree_format					Format tree ["nexus","newick"].
 
@@ -105,9 +105,9 @@ if(! params.input){
 	exit 1, "Missing tree input file : $params.input. Specify path with --input"
 }
 
-params.event_id = false
-if(! params.event_id){
-	exit 1, "Missing Event identifier : $params.event_id. Specify path with --event_id"
+params.challenges_ids = false
+if(! params.challenges_ids){
+	exit 1, "Missing Event identifier : $params.challenges_ids. Specify path with --challenges_ids"
 }
 
 params.participant_id = false
@@ -129,7 +129,7 @@ summary['Test tree input']   = params.input
 summary['Goldstandard dir']  = params.goldstandard_dir
 summary['Public ref dir']    = params.public_ref_dir
 summary['Benchmark data dir']  = params.assess_dir
-summary['Event ID']            = params.event_id
+summary['Event ID']            = params.challenges_ids
 summary['Participant ID']      = params.participant_id
 if(workflow.revision) summary['Pipeline Release'] = workflow.revision
 summary['Current home']        = "$HOME"
@@ -233,7 +233,7 @@ process getQueryIds {
   file "*.json" into query_ids_json
 
   """
-  getLeavesFromNewick.py --event_id ${params.event_id} --tree_file $tree --tree_format ${params.tree_format} --output queryids.json
+  getLeavesFromNewick.py --challenges_ids ${params.challenges_ids} --tree_file $tree --tree_format ${params.tree_format} --output queryids.json
   """
 
 }
@@ -283,7 +283,7 @@ process RobinsonFouldsMetrics {
   """
   mkdir aggregated_data
   cp -r $benchmark_dir/* aggregated_data/
-  calculateRobinsonFouldsMetric.py --tree_file1 $tree1 --benchmark_trees_path aggregated_data -e ${params.event_id} -p ${params.participant_id}
+  calculateRobinsonFouldsMetric.py --tree_file1 $tree1 --benchmark_trees_path aggregated_data -e ${params.challenges_ids} -p ${params.participant_id}
   """
 
 }
@@ -309,7 +309,7 @@ process SnPrecisionMetrics {
   file_validated == 0
 
   """
-  calculateSnPrecision.py --tree_file1 $tree1 --tree_file2 $gold_dir/SIM-Sbareilly.tre -e ${params.event_id} -p ${params.participant_id} -o ${params.participant_id}"_snprecision.json"
+  calculateSnPrecision.py --tree_file1 $tree1 --tree_file2 $gold_dir/SIM-Sbareilly.tre -e ${params.challenges_ids} -p ${params.participant_id} -o ${params.participant_id}"_snprecision.json"
   """
 
 }

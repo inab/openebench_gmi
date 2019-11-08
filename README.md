@@ -19,14 +19,14 @@ nextflow run main.nf --help
 
 ```
 Usage:
-nextflow run BU-ISCIII/openebench_gmi --tree_test {test.newick.file} --goldstandard_dir {golden.folder.path} --assess_dir {assessment.path} --public_ref_dir {path.to.info.ref.dataset} --event_id {event.id}
+nextflow run BU-ISCIII/openebench_gmi --tree_test {test.newick.file} --goldstandard_dir {golden.folder.path} --assess_dir {assessment.path} --public_ref_dir {path.to.info.ref.dataset} --challenges_ids {event.id}
 
 Mandatory arguments:
   --tree_test                   Path to input data (must be surrounded with quotes).
   --goldstandard_dir            Path to reference data. Golden datasets.
   --public_ref_dir              Path where public dataset info is stored for validation.
   --assess_dir                  Path where benchmark data is stored.
-  --event_id                    Event identifier.
+  --challenges_ids                    Event identifier.
   --participant_id              Participant identifier.
   --tree_format                 Format tree ["nexus","newick"].
 

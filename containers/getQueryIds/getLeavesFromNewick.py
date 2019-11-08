@@ -31,7 +31,7 @@ def check_arg (args=None) :
     parser.add_argument('--tree_file','-t', required= True, help ='Path to tree file')
     parser.add_argument('--tree_format','-f' ,required= False,choices = ["newick","nexus"], help = 'Tree file format [newick,nexus]', default = "newick")
     parser.add_argument('--output' ,'-o',required= False, help = 'Path to result tree file.Default = ids.json', default="ids.json")
-    parser.add_argument('--event_id','-e' ,required= False, help = 'OpenEbench event identifier', default="default")
+    parser.add_argument('--challenges_ids','-e' ,required= False, help = 'OpenEbench event identifier', default="default")
 
     return parser.parse_args()
 
@@ -68,9 +68,9 @@ if __name__ == '__main__' :
         raise
         sys.exit(1)
 
-    # Create ids dictionary with event_id and sample ids from tree leaves.
+    # Create ids dictionary with challenges_ids and sample ids from tree leaves.
     try:
-        ids.update(testEventId = arguments.event_id)
+        ids.update(testEventId = arguments.challenges_ids)
         for leaf in tree.get_terminals():
             leaves.append(leaf.name)
 
