@@ -1,6 +1,6 @@
 # Choose any base image you prefer, like bioconda, ubuntu, alpine, etc..
 # or using a multistage deployment
-FROM centos:latest
+FROM centos:7.6.1810
 
 # Use a single LABEL (multiple ones are discouraged because each one creates a new layer)
 LABEL	description="Sample ids extractor" vendor="ISCIII" version="0.1" maintainer="Sara Monzon <smonzon@isciii.es>"
@@ -16,7 +16,7 @@ RUN echo "Install basic development tools" && \
     yum -y install python-setuptools && \
     easy_install pip && \
     echo "Installing SCI-F" && \
-    pip install scif ipython
+    pip install scif==0.0.77 ipython
 
 
 # Now, we get the validation program in some way (copying, git clone, etc...)
