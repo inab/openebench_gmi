@@ -178,7 +178,6 @@ process validateInputFormat {
 
   input:
   file tree from input_file
-  file docker_image_dependency
 
   output:
   file "*.nwk" into canonical_getresultsids,canonical_robinsonfoulds,canonical_snprecision
