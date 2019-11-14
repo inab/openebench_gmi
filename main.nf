@@ -168,33 +168,6 @@ PIPELINE
 
 
 /*
-* Assuring the preconditions (in this case, the docker images) are in place
-*/
-process dockerPreconditions {
-  //tag
-  publishDir path: "${params.statsdir}", mode: 'copy', overwrite: true
-
-  input:
-
-  output:
-    file docker_image_dependency
-
-  """
-  echo "$baseDir"
-  docker build -t openebench_gmi/sample-checkresults:latest -f $baseDir/containers/checkFormat/Dockerfile $baseDir
-  docker build -t openebench_gmi/sample-getqueryids:latest -f $baseDir/containers/getQueryIds/Dockerfile $baseDir
-  docker build -t openebench_gmi/sample-compareids:latest -f $baseDir/containers/compareIds/Dockerfile $baseDir
-  docker build -t openebench_gmi/sample-calculatesnprecision:latest -f $baseDir/containers/calculateSnPrecision/Dockerfile $baseDir
-  docker build -t openebench_gmi/sample-robinsonfoulds:latest -f $baseDir/containers/robinsonFouldsMetric/Dockerfile $baseDir
-  docker build -t openebench_gmi/sample-assessment-snprecision:latest -f $baseDir/containers/assessmentSnPrecision/Dockerfile $baseDir
-  docker build -t openebench_gmi/sample-assessment-rfheatmap:latest -f $baseDir/containers/assessmentRfHeatmap/Dockerfile $baseDir
-  touch docker_image_dependency
-  """
-
-}
-
-
-/*
 * The instance generated from this docker file has to check the syntax of the submitted results.
 */
 process validateInputFormat {
