@@ -38,7 +38,7 @@ Other options:
 ## Datasets
 First of all, needed datasets have been collected in: [datasets folder](datasets)
 
-1. **Input dataset:** fastq input data obtained from [GMI WGS standards and benchmarks repository](https://github.com/globalmicrobialidentifier-WG3/datasets). [Here](datasets/inputDataset/Readme.me) you can find instructions for download.
+1. **Input dataset:** fastq input data obtained from [GMI WGS standards and benchmarks repository](https://github.com/globalmicrobialidentifier-WG3/datasets). [Here](datasets/inputDataset/README.md) you can find instructions for download.
 2. **Gold standard dataset:** confirmed phylogeny for the outbreak being investigated.
 3. **Input dataset ids:** input dataset ids in .txt and .json format.
 4. **Test dataset:** a test tree for comparing with gold standard result. In this case just the same golden dataset. Robinson-Foulds metrics must be 0.
