@@ -3,10 +3,13 @@
 # Nextflow pipeline using containers for an Outbreak detection challenge using OpenEbench platform
 
 This repository intends to be a nextflow + container implementation of OpenEbench workflow for an Outbreak detection challenge. 
+
+It has been originally both at <https://github.com/BU-ISCIII/openebench_gmi.git> and <https://github.com/javi-gv94/openebench_gmi.git>.
+
 ## How to use it
 
 ```Bash
-git clone https://github.com/BU-ISCIII/openebench_gmi.git
+git clone https://github.com/inab/openebench_gmi.git
 cd openebench_gmi.git
 git submodule init
 git submodule update
