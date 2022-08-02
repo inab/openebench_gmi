@@ -6,8 +6,12 @@
 ===============================================================================================================
  #### Homepage / Documentation
  https://github.com/BU-ISCIII/openebench_gmi
+ https://github.com/javi-gv94/openebench_gmi
+ https://github.com/inab/openebench_gmi
  @#### Authors
  Sara Monzon <smonzon@isciii.es>
+ Javier Garrayo-Ventas <https://orcid.org/0000-0003-0015-1573>
+ José Mª Fernández <https://orcid.org/0000-0002-4806-5140>
 ----------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------
 Pipeline overview:
@@ -54,8 +58,7 @@ def helpMessage() {
  */
 
 // Pipeline version
-//version = '1.0'
-version = workflow.manifest.version
+version = workflow.manifest.version ?: '1.0'
 
 // Show help message
 params.help = false
@@ -173,7 +176,7 @@ PIPELINE
 */
 process validateInputFormat {
 
-  container 'openebench_gmi/sample-checkresults:${version}'
+  container "openebench_gmi/sample-checkresults:" + version
 
   publishDir path: "${params.otherdir}", mode: 'copy', overwrite: true
 
@@ -194,7 +197,7 @@ process validateInputFormat {
 */
 process getQueryIds {
 
-  container 'openebench_gmi/sample-getqueryids:${version}'
+  container "openebench_gmi/sample-getqueryids:" + version
 
   publishDir path: "${params.otherdir}", mode: 'copy', overwrite: true
 
@@ -216,7 +219,7 @@ process getQueryIds {
 */
 process ValidateInputIds {
 
-  container 'openebench_gmi/sample-compareids:${version}'
+  container "openebench_gmi/sample-compareids:" + version
 
   publishDir path: "${params.otherdir}", mode: 'copy', overwrite: true
 
@@ -238,7 +241,7 @@ process ValidateInputIds {
 */
 process RobinsonFouldsMetrics {
 
-  container 'openebench_gmi/sample-robinsonfoulds:${version}'
+  container "openebench_gmi/sample-robinsonfoulds:" + version
 
   publishDir path: "${params.otherdir}", mode: 'copy', overwrite: true
 
@@ -266,7 +269,7 @@ process RobinsonFouldsMetrics {
 */
 process SnPrecisionMetrics {
 
-  container 'openebench_gmi/sample-calculatesnprecision:${version}'
+  container "openebench_gmi/sample-calculatesnprecision:" + version
 
   publishDir path: "${params.otherdir}", mode: 'copy', overwrite: true
 
@@ -288,7 +291,7 @@ process SnPrecisionMetrics {
 }
 
 process manage_assessment_snprecision {
-	container "openebench_gmi/sample-assessment-snprecision:${version}"
+	container "openebench_gmi/sample-assessment-snprecision:" + version
 	tag "Performing benchmark assessment and building plots"
 
   	// publishDir path: "${params.outdir}", mode: 'copy', overwrite: true
@@ -313,7 +316,7 @@ process manage_assessment_snprecision {
 }
 
 process manage_assessment_rfheatmap {
-	container "openebench_gmi/sample-assessment-rfheatmap:${version}"
+	container "openebench_gmi/sample-assessment-rfheatmap:" + version
 	tag "Performing benchmark assessment and building plots"
 
   	publishDir path: "${params.otherdir}", mode: 'copy', overwrite: true
