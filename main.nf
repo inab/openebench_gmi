@@ -54,7 +54,8 @@ def helpMessage() {
  */
 
 // Pipeline version
-version = '1.0'
+//version = '1.0'
+version = workflow.manifest.version
 
 // Show help message
 params.help = false
@@ -172,7 +173,7 @@ PIPELINE
 */
 process validateInputFormat {
 
-  container 'openebench_gmi/sample-checkresults:${workflow.manifest.version}'
+  container 'openebench_gmi/sample-checkresults:${version}'
 
   publishDir path: "${params.otherdir}", mode: 'copy', overwrite: true
 
@@ -193,7 +194,7 @@ process validateInputFormat {
 */
 process getQueryIds {
 
-  container 'openebench_gmi/sample-getqueryids:${workflow.manifest.version}'
+  container 'openebench_gmi/sample-getqueryids:${version}'
 
   publishDir path: "${params.otherdir}", mode: 'copy', overwrite: true
 
@@ -215,7 +216,7 @@ process getQueryIds {
 */
 process ValidateInputIds {
 
-  container 'openebench_gmi/sample-compareids:${workflow.manifest.version}'
+  container 'openebench_gmi/sample-compareids:${version}'
 
   publishDir path: "${params.otherdir}", mode: 'copy', overwrite: true
 
@@ -237,7 +238,7 @@ process ValidateInputIds {
 */
 process RobinsonFouldsMetrics {
 
-  container 'openebench_gmi/sample-robinsonfoulds:${workflow.manifest.version}'
+  container 'openebench_gmi/sample-robinsonfoulds:${version}'
 
   publishDir path: "${params.otherdir}", mode: 'copy', overwrite: true
 
@@ -265,7 +266,7 @@ process RobinsonFouldsMetrics {
 */
 process SnPrecisionMetrics {
 
-  container 'openebench_gmi/sample-calculatesnprecision:${workflow.manifest.version}'
+  container 'openebench_gmi/sample-calculatesnprecision:${version}'
 
   publishDir path: "${params.otherdir}", mode: 'copy', overwrite: true
 
@@ -287,7 +288,7 @@ process SnPrecisionMetrics {
 }
 
 process manage_assessment_snprecision {
-	container "openebench_gmi/sample-assessment-snprecision:${workflow.manifest.version}"
+	container "openebench_gmi/sample-assessment-snprecision:${version}"
 	tag "Performing benchmark assessment and building plots"
 
   	// publishDir path: "${params.outdir}", mode: 'copy', overwrite: true
@@ -312,7 +313,7 @@ process manage_assessment_snprecision {
 }
 
 process manage_assessment_rfheatmap {
-	container "openebench_gmi/sample-assessment-rfheatmap:${workflow.manifest.version}"
+	container "openebench_gmi/sample-assessment-rfheatmap:${version}"
 	tag "Performing benchmark assessment and building plots"
 
   	publishDir path: "${params.otherdir}", mode: 'copy', overwrite: true
