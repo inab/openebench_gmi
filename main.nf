@@ -172,7 +172,7 @@ PIPELINE
 */
 process validateInputFormat {
 
-  container 'openebench_gmi/sample-checkresults:latest'
+  container 'openebench_gmi/sample-checkresults:${workflow.manifest.version}'
 
   publishDir path: "${params.otherdir}", mode: 'copy', overwrite: true
 
@@ -193,7 +193,7 @@ process validateInputFormat {
 */
 process getQueryIds {
 
-  container 'openebench_gmi/sample-getqueryids:latest'
+  container 'openebench_gmi/sample-getqueryids:${workflow.manifest.version}'
 
   publishDir path: "${params.otherdir}", mode: 'copy', overwrite: true
 
@@ -215,7 +215,7 @@ process getQueryIds {
 */
 process ValidateInputIds {
 
-  container 'openebench_gmi/sample-compareids:latest'
+  container 'openebench_gmi/sample-compareids:${workflow.manifest.version}'
 
   publishDir path: "${params.otherdir}", mode: 'copy', overwrite: true
 
@@ -237,7 +237,7 @@ process ValidateInputIds {
 */
 process RobinsonFouldsMetrics {
 
-  container 'openebench_gmi/sample-robinsonfoulds:latest'
+  container 'openebench_gmi/sample-robinsonfoulds:${workflow.manifest.version}'
 
   publishDir path: "${params.otherdir}", mode: 'copy', overwrite: true
 
@@ -265,7 +265,7 @@ process RobinsonFouldsMetrics {
 */
 process SnPrecisionMetrics {
 
-  container 'openebench_gmi/sample-calculatesnprecision:latest'
+  container 'openebench_gmi/sample-calculatesnprecision:${workflow.manifest.version}'
 
   publishDir path: "${params.otherdir}", mode: 'copy', overwrite: true
 
@@ -287,7 +287,7 @@ process SnPrecisionMetrics {
 }
 
 process manage_assessment_snprecision {
-	container = "openebench_gmi/sample-assessment-snprecision:latest"
+	container "openebench_gmi/sample-assessment-snprecision:${workflow.manifest.version}"
 	tag "Performing benchmark assessment and building plots"
 
   	// publishDir path: "${params.outdir}", mode: 'copy', overwrite: true
@@ -302,17 +302,17 @@ process manage_assessment_snprecision {
 	// file "$result_dir/*" into benchmark_snprecision_result
 
 	"""
-  mkdir aggregated_data
-  cp -r $assess_dir/* aggregated_data/
-  cp $new_data/participant_matrix.json $new_data/*.nwk aggregated_data/
+	mkdir aggregated_data
+	cp -r $assess_dir/* aggregated_data/
+	cp $new_data/participant_matrix.json $new_data/*.nwk aggregated_data/
 	python /app/manage_assessment_data.py -b aggregated_data -p $participant_result -o results
-  cp -pr results/* $result_dir
+	cp -pr results/* $result_dir
 	"""
 
 }
 
 process manage_assessment_rfheatmap {
-	container = "openebench_gmi/sample-assessment-rfheatmap:latest"
+	container "openebench_gmi/sample-assessment-rfheatmap:${workflow.manifest.version}"
 	tag "Performing benchmark assessment and building plots"
 
   	publishDir path: "${params.otherdir}", mode: 'copy', overwrite: true

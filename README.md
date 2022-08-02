@@ -13,6 +13,11 @@ git clone https://github.com/inab/openebench_gmi.git
 cd openebench_gmi.git
 git submodule init
 git submodule update
+
+# Next command it is needed to build the containers
+./build-containers.bash
+
+# Next command launches a test execution
 nextflow run main.nf -profile docker 
 ```
 Parameters available:
@@ -22,7 +27,7 @@ nextflow run main.nf --help
 
 ```
 Usage:
-nextflow run BU-ISCIII/openebench_gmi --tree_test {test.newick.file} --goldstandard_dir {golden.folder.path} --assess_dir {assessment.path} --public_ref_dir {path.to.info.ref.dataset} --challenges_ids {event.id}
+nextflow run inab/openebench_gmi --tree_test {test.newick.file} --goldstandard_dir {golden.folder.path} --assess_dir {assessment.path} --public_ref_dir {path.to.info.ref.dataset} --challenges_ids {event.id}
 
 Mandatory arguments:
   --tree_test                   Path to input data (must be surrounded with quotes).
@@ -48,7 +53,7 @@ First of all, needed datasets have been collected in: [datasets folder](datasets
 5. **benchmark_data**: path where benchmark results are stored.
 
 ## Nextflow pipeline and containers
-Second, a pipeline has been developed which is splitted in three steps following OpenEbench specifications following this [repo](https://github.com/inab/opeb-submission) as an example:
+Second, a pipeline has been developed which is splitted in three steps following OpenEbench specifications following [TCGA benchmarking repo](https://github.com/inab/TCGA_benchmarking_workflow) as an example:
 
 ### Nextflow processes
 1. **Validation and data preprocessing:**
