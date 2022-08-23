@@ -15,7 +15,7 @@ git submodule init
 git submodule update
 
 # Next command it is needed to build the containers
-./build-containers.bash
+./materialize-containers.bash
 
 # Next command launches a test execution
 nextflow run main.nf -profile docker 
